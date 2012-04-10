@@ -218,6 +218,8 @@ def cancelSubs():
     errno = ZCancelSubscriptions(0)
     __error(errno)
 
+_rpipe, _wpipe = os.pipe()
+
 def receive(block=False):
     cdef ZNotice_t notice
     cdef sockaddr_in sender
@@ -225,7 +227,10 @@ def receive(block=False):
     while ZPending() == 0:
         if not block:
             return None
-        select.select([getFD()], [], [])
+
+        fd = getFD()
+        if fd not in select.select([fd, _rpipe], [], []):
+            return None
 
     errno = ZReceiveNotice(&notice, &sender)
     __error(errno)
@@ -238,6 +243,9 @@ def receive(block=False):
     p_notice = ZNotice()
     _ZNotice_c2p(&notice, p_notice)
     return p_notice
+
+def interrupt():
+    os.write(_wpipe, "\x01")
 
 def sender():
     return ZGetSender()
@@ -283,3 +291,6 @@ def getSubscriptions():
     __error(errno)
 
     return lst
+
+
+

@@ -1,8 +1,8 @@
 import _zephyr as _z
 
-from _zephyr import receive, ZNotice, sender, realm, getVariable, setVariable, unsetVariable
+from _zephyr import receive, ZNotice, sender, realm, interrupt, getVariable, setVariable, unsetVariable
 
-__all__ = ("receive", "ZNotice", "sender", "realm", "init", "Subscriptions", "getVariable", "setVariable", "unsetVariable")
+__all__ = ("receive", "ZNotice", "sender", "realm", "interrupt", "init", "Subscriptions", "getVariable", "setVariable", "unsetVariable")
 __inited = False
 
 def init():
@@ -66,7 +66,7 @@ class Subscriptions(set):
         _z.unsub(*item)
         
         super(Subscriptions, self).remove(item)
-
+    
     def clear(self):
         _z.cancelSubs()
         super(Subscriptions, self).clear()
@@ -88,3 +88,4 @@ class Subscriptions(set):
 
         _z.unsubAll(list(del_items))
         super(Subscriptions, self).difference_update(del_items)
+
