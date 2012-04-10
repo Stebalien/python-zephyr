@@ -275,13 +275,13 @@ def getSubscriptions():
     errno = ZRetrieveSubscriptions(0, &nsubs)
     __error(errno)
 
+    if not nsubs:
+        return []
+
     subs = <ZSubscription_t*>calloc(nsubs, sizeof(ZSubscription_t))
 
     errno = ZGetSubscriptions(subs, &nsubs)
     __error(errno)
-
-    if not nsubs:
-        return []
 
     lst = [0]*nsubs
     for 0 <= i < nsubs:
