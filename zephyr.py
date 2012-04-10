@@ -63,3 +63,25 @@ class Subscriptions(set):
         _z.unsub(*item)
         
         super(Subscriptions, self).remove(item)
+
+    def clear(self):
+        _z.cancelSubs()
+        super(Subscriptions, self).clear()
+
+    def update(self, items):
+        new_items = set(self._fixTuple(s) for s in items) - self
+        if not new_items:
+            return
+
+        _z.subAll(list(new_items))
+        super(Subscriptions, self).update(new_items)
+
+    def difference_update(self, items):
+        del_items = set(self._fixTuple(s) for s in items)
+        del_items.intersection_update(self)
+
+        if not del_items:
+            return
+
+        _z.unsubAll(list(del_items))
+        super(Subscriptions, self).difference_update(del_items)
