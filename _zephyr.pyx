@@ -229,7 +229,7 @@ def receive(block=False):
             return None
 
         fd = getFD()
-        if fd not in select.select([fd, _rpipe], [], []):
+        if fd not in select.select([fd, _rpipe], [], [])[0]:
             return None
 
     errno = ZReceiveNotice(&notice, &sender)
