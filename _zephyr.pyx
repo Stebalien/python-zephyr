@@ -181,12 +181,11 @@ def subAll(lst):
             newsubs[i].zsub_classinst = lst[i][1]
             newsubs[i].zsub_recipient = lst[i][2]
 
-        errno = ZUnsubscribeTo(newsubs, len(lst), 0)
+        errno = ZSubscribeTo(newsubs, len(lst), 0)
         __error(errno)
     finally:
         if newsubs:
             free(newsubs);
-    pass
 
 def unsub(cls, instance, recipient):
     cdef ZSubscription_t delsub[1]
