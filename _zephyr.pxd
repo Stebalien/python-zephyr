@@ -87,6 +87,9 @@ cdef extern from "zephyr/zephyr.h":
     char * ZGetVariable(char *var)
     int ZSetVariable(char *var, char *value)
     int ZUnsetVariable(char *var)
+    int ZRetrieveSubscriptions(unsigned short port, int *nsubs)
+    int ZGetSubscriptions(ZSubscription_t *, int *nsubs)
+    int ZFlushSubscriptions()
 
 cdef extern from "Python.h":
     object PyString_FromStringAndSize(char *, Py_ssize_t)

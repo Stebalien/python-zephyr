@@ -255,3 +255,31 @@ def setVariable(var, value):
 def unsetVariable(var):
     errno = ZUnsetVariable(_string_p2c(value))
     __error(errno)
+
+def getSubscriptions():
+    cdef int nsubs
+    cdef ZSubscription_t *subs
+    cdef unsigned int i
+
+    nsubs = 0
+
+
+    errno = ZRetrieveSubscriptions(0, &nsubs)
+    __error(errno)
+
+    subs = <ZSubscription_t*>calloc(nsubs, sizeof(ZSubscription_t))
+
+    errno = ZGetSubscriptions(subs, &nsubs)
+    __error(errno)
+
+    if not nsubs:
+        return []
+
+    lst = [0]*nsubs
+    for 0 <= i < nsubs:
+        lst[i] = (subs[i].zsub_class, subs[i].zsub_classinst, subs[i].zsub_recipient)
+
+    errno = ZFlushSubscriptions()
+    __error(errno)
+
+    return lst

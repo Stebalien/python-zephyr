@@ -1,8 +1,8 @@
 import _zephyr as _z
-import os
 
-from _zephyr import receive, ZNotice
+from _zephyr import receive, ZNotice, sender, realm, getVariable, setVariable, unsetVariable
 
+__all__ = ("receive", "ZNotice", "sender", "realm", "init", "Subscriptions", "getVariable", "setVariable", "unsetVariable")
 __inited = False
 
 def init():
@@ -26,6 +26,9 @@ class Subscriptions(set):
             cls._instance = super(Subscriptions, cls).__new__(cls)
             init()
         return cls._instance
+
+    def __init__(self):
+        super(Subscriptions, self).__init__(_z.getSubscriptions())
     
     def __del__(self):
         _z.cancelSubs()
