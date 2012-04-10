@@ -244,3 +244,14 @@ def sender():
 
 def realm():
     return ZGetRealm()
+
+def getVariable(var):
+    return _string_c2p(ZGetVariable(_string_p2c(var)))
+
+def setVariable(var, value):
+    errno = ZSetVariable(_string_p2c(var), _string_p2c(value))
+    __error(errno)
+
+def unsetVariable(var):
+    errno = ZUnsetVariable(_string_p2c(value))
+    __error(errno)

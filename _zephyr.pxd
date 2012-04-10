@@ -84,6 +84,9 @@ cdef extern from "zephyr/zephyr.h":
     int ZCancelSubscriptions(unsigned short port)
     char * ZGetSender()
     char * ZGetRealm()
+    char * ZGetVariable(char *var)
+    int ZSetVariable(char *var, char *value)
+    int ZUnsetVariable(char *var)
 
 cdef extern from "Python.h":
     object PyString_FromStringAndSize(char *, Py_ssize_t)
