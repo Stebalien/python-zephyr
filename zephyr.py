@@ -1,3 +1,4 @@
+from functools import wraps
 import _zephyr as _z
 
 from _zephyr import receive, ZNotice, sender, realm, interrupt, getVariable, setVariable, unsetVariable
@@ -12,6 +13,16 @@ def init():
         _z.openPort()
         _z.cancelSubs()
         __inited = True
+
+def req_init(func):
+    @wraps(func)
+    def do(*args, **kwargs):
+        init()
+        return func(*args, **kwargs)
+    return do
+
+receive = req_init(receive)
+sender = req_init(sender)
 
 class Subscriptions(set):
     """
